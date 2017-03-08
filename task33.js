@@ -15,8 +15,8 @@ let carController = {
 	//设置定位 x为行数最小为1 y为列数最小为1
 	setCarSize() {
 		let ele = document.getElementsByTagName('ul')[1].getElementsByTagName('li')[1];
-    this.car.style.height = window.getComputedStyle(ele, null).getPropertyValue('height');    		
-	  this.car.style.width  = window.getComputedStyle(ele, null).getPropertyValue('width');
+    	this.car.style.height = window.getComputedStyle(ele, null).getPropertyValue('height');    		
+	  	this.car.style.width  = window.getComputedStyle(ele, null).getPropertyValue('width');
 	},
 	setCarLocation([x, y]) {
 		if (x <= 0 || x >= 11 || y <= 0 || y >= 11) return alert('超出了活动范围！');
