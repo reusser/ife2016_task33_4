@@ -10,18 +10,18 @@ let carController = {
 	location: [5, 5],
 	deg: 0,
 	init() {
-    this.setCarSize();
+                this.setCarSize();
 	},
 	//设置定位 x为行数最小为1 y为列数最小为1
 	setCarSize() {
 		let ele = document.getElementsByTagName('ul')[1].getElementsByTagName('li')[1];
-    this.car.style.height = window.getComputedStyle(ele, null).getPropertyValue('height');    		
-	  this.car.style.width  = window.getComputedStyle(ele, null).getPropertyValue('width');
+                this.car.style.height = window.getComputedStyle(ele, null).getPropertyValue('height');    		
+	        this.car.style.width  = window.getComputedStyle(ele, null).getPropertyValue('width');
 	},
 	setCarLocation([x, y]) {
 		if (x <= 0 || x >= 11 || y <= 0 || y >= 11) return alert('超出了活动范围！');
-	    this.car.style.transform = `translateX(${100 * y}%) translateY(${100 * x}%) rotateZ(${this.deg}deg)`;
-	    this.location = [x, y];
+	        this.car.style.transform = `translateX(${100 * y}%) translateY(${100 * x}%) rotateZ(${this.deg}deg)`;
+	        this.location = [x, y];
 	},
 	//向左转
 	turnLeft() {
@@ -63,8 +63,8 @@ let carController = {
 		}
 	},
 	rotateCar() {
-    let [x, y] = this.location;
-    this.car.style.transform = `translateX(${100 * y}%) translateY(${100 * x}%) rotateZ(${this.deg}deg)`;
+                let [x, y] = this.location;
+                this.car.style.transform = `translateX(${100 * y}%) translateY(${100 * x}%) rotateZ(${this.deg}deg)`;
 	}
 };
 
