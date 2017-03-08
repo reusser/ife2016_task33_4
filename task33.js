@@ -20,8 +20,8 @@ let carController = {
 	},
 	setCarLocation([x, y]) {
 		if (x <= 0 || x >= 11 || y <= 0 || y >= 11) return alert('超出了活动范围！');
-	  this.car.style.transform = `translateX(${100 * y}%) translateY(${100 * x}%) rotateZ(${this.deg}deg)`;
-	  this.location = [x, y];
+	    this.car.style.transform = `translateX(${100 * y}%) translateY(${100 * x}%) rotateZ(${this.deg}deg)`;
+	    this.location = [x, y];
 	},
 	//向左转
 	turnLeft() {
@@ -70,7 +70,7 @@ let carController = {
 
 let cmdHandler = (text) => {
 	text = text.toLowerCase();
-	text = text.replace(/\s*/, '');
+	text = text.replace(/\s/g, '');console.log(text)
 	if (text === 'go') carController.go();
 	else if (text === 'tunlef') carController.turnLeft();
 	else if (text === 'tunrig') carController.turnRight();
