@@ -70,7 +70,7 @@ let carController = {
 
 let cmdHandler = (text) => {
 	text = text.toLowerCase();
-	text = text.replace(/\s/g, '');console.log(text)
+	text = text.replace(/\s/g, '');
 	if (text === 'go') carController.go();
 	else if (text === 'tunlef') carController.turnLeft();
 	else if (text === 'tunrig') carController.turnRight();
