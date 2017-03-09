@@ -41,7 +41,7 @@ let carController = {
 	},
 	turnBack() {
 		this.turnRight();
-		setTimeout(() => this.turnRight(), 500);
+		setTimeout(() => this.turnRight(), 250);
 	},
 	go() {
 		if (this.directionNow === 'up') {
