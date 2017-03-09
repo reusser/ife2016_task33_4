@@ -88,3 +88,4 @@ cmdBtn.onclick = () => {
 }
 
 carController.init();
+console.log("%c 18届小萌新求前端实习 熟悉html css js 自学vue中","background-image:-webkit-gradient( linear, left top,right top, color-stop(0, #4096EE), color-stop(0.15, #FF1A00), color-stop(0.3, #4096EE), color-stop(0.45, #FF1A00),color-stop(0.6, #4096EE), color-stop(0.75, #FF1A00),color-stop(0.9, #4096EE), color-stop(1, #FF1A00));color:transparent;-webkit-background-clip:text;font-size:14px;");
