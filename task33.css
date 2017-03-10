@@ -65,34 +65,66 @@ ul li {
 	background-color: #3498db;
 }
 #cmd {
+	float: right;
 	width: 550px;
-	height: 80px;
-	margin: auto;
-	padding: 20px;
+	height: 550px;
+	margin-top: 40px;
+	margin-right: 100px;
+}
+#btn-box {
+	margin: 10px auto;
 	text-align: center;
 }
-#cmd-input {
-	height: 30px;
-	width: 200px;
-	margin-left: 10px;
-	margin-right: 20px;
-	padding-left: 5px;
-	outline: none;
-	border: 1px solid #ccc;
-	border-radius: 2px;
-}
-#cmd-btn {
+#cmd-btn,
+#re-btn {
 	display: inline-block;
 	height: 30px;
 	width: 60px;
+	margin: auto;
+	margin-left: 20px;
+	text-align: center;
 	color: #fff;
 	line-height: 30px;
 	vertical-align: top;
 	border: 1px solid #3498db;
+	border-radius: 1px;
 	background-color: #3498db;
 	cursor: pointer;
 	transition: background-color .2s ease-in-out;
 }
-#cmd-btn:hover {
+#cmd-btn:hover,
+#re-btn:hover {
 	background-color: #3fadf7;
+}
+#cmdArea {
+	width: 90%;
+	height: 360px;
+	padding-left: 11%;
+	font-size: 22px;
+	line-height: 30px;
+	color: #27ae60;
+	border: none;
+	outline: none;
+	background-color: #000;
+}
+#row-num {
+	position: absolute;
+	height: 360px;
+	width: 10%;
+	font-size: 16px;
+  background-color: #ccc;
+	overflow: hidden;
+}
+#row-num div{
+	display: block;
+  height: 8.334%;
+  width: 100%;
+  font-family: monospace;
+  font-size: 22px;
+  line-height: 30px;
+  text-align: center;
+  color: #fff;
+}
+#area-box {
+	position: relative;
 }
