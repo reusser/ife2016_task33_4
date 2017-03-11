@@ -8,6 +8,7 @@ let carController = {
   directionPointer: 0,
   directionNow: 'up',
   location: [5, 5],
+  walls: {},
   deg: 0,
   init() {
     this.setCarSize();
@@ -20,6 +21,7 @@ let carController = {
   },
   setCarLocation([x, y]) {
     if (x <= 0 || x >= 11 || y <= 0 || y >= 11) return alert('超出了活动范围！');
+    if (this.walls[`${x}_${y}`]) return false;
     this.car.style.transform = `translateX(${100 * y}%) translateY(${100 * x}%) rotateZ(${this.deg}deg)`;
     this.location = [x, y];
   },
@@ -46,22 +48,48 @@ let carController = {
   },
   //前进
   go(moveNum) {
+    let i = 1;
     if (this.directionNow === 'up') {
-
-      this.setCarLocation([this.location[0] - moveNum, this.location[1]]);
+      let timer = setInterval( () => {
+        let flag = this.setCarLocation([this.location[0] - 1, this.location[1]]);
+        if (flag === false || i == moveNum) {
+          clearInterval(timer);
+          return;
+        }
+        i++
+      }, 50)
 
     } else if (this.directionNow === 'right') {
 
-      this.setCarLocation([this.location[0], this.location[1] + moveNum]);
+      let timer = setInterval( () => {
+        let flag = this.setCarLocation([this.location[0], this.location[1] + 1]);
+        if (flag === false || i == moveNum) {
+          clearInterval(timer);
+          return;
+        }
+        i++
+      }, 50)
 
     } else if (this.directionNow === 'down') {
 
-      this.setCarLocation([this.location[0] + moveNum, this.location[1]]);
+      let timer = setInterval( () => {
+        let flag = this.setCarLocation([this.location[0] + 1, this.location[1]]);
+        if (flag === false || i == moveNum) {
+          clearInterval(timer);
+          return;
+        }
+        i++
 
+      }, 50)
     } else {
-
-      this.setCarLocation([this.location[0], this.location[1] - moveNum]);
-      
+      let timer = setInterval( () => {
+        let flag = this.setCarLocation([this.location[0], this.location[1] - 1]);
+        if (flag === false || i == moveNum) {
+          clearInterval(timer);
+          return;
+        }
+        i++
+      }, 50)  
     }
   },
   //向左移动一格，方向不变
@@ -110,6 +138,73 @@ let carController = {
     this.rotateCar();
     setTimeout( () => this.go(moveNum), 500);
   },
+  build() {
+    if (this.directionNow === 'up') {
+
+      this.setWall([this.location[0] - 1, this.location[1]]);
+
+    } else if (this.directionNow === 'right') {
+
+      this.setWall([this.location[0], this.location[1] + 1]);
+
+    } else if (this.directionNow === 'down') {
+
+      this.setWall([this.location[0] + 1, this.location[1]]);
+
+    } else {
+
+      this.setWall([this.location[0], this.location[1] - 1]);
+      
+    }
+  },
+  setWall([x, y]) {
+    if (x <= 0 || x >= 11 || y <= 0 || y >= 11) return console.log('超出了范围！');
+    if (this.walls[`${x}_${y}`]) return console.log('此位置已经有墙');
+    if (x == this.location[0] && y == this.location[1]) return console.log('不能在小滑块处修墙');
+    let wall = document.getElementsByTagName('ul')[x].getElementsByTagName('li')[y];
+    wall.style.backgroundColor = '#99a9bf';
+    this.walls[`${x}_${y}`] = true;
+  },
+  randomBuild() {
+    let x = Math.floor(Math.random() * 10 + 1);
+    let y = Math.floor(Math.random() * 10 + 1);
+    this.setWall([x, y]);
+  },
+  paintWall(color) {
+    if (!/^#/.test(color) || color.length != 7) return console.log('颜色格式不正确');
+    if (this.directionNow === 'up') {
+
+      let [x, y] = this.location;
+      if (this.walls[`${x - 1}_${y}`]) document.getElementsByTagName('ul')[x - 1].getElementsByTagName('li')[y].style.backgroundColor = color;
+      else return console.log('没有墙可以粉刷');
+
+    } else if (this.directionNow === 'right') {
+
+        let [x, y] = this.location;
+        if (this.walls[`${x}_${y + 1}`]) document.getElementsByTagName('ul')[x].getElementsByTagName('li')[y + 1].style.backgroundColor = color;
+        else return console.log('没有墙可以粉刷');
+
+    } else if (this.directionNow === 'down') {
+
+        let [x, y] = this.location;
+        if (this.walls[`${x + 1}_${y}`]) document.getElementsByTagName('ul')[x + 1].getElementsByTagName('li')[y].style.backgroundColor = color;
+        else return console.log('没有墙可以粉刷');
+
+    } else {
+
+        let [x, y] = this.location;
+        if (this.walls[`${x}_${y - 1}`]) document.getElementsByTagName('ul')[x].getElementsByTagName('li')[y - 1].style.backgroundColor = color;
+        else return console.log('没有墙可以粉刷'); 
+
+    }
+  },
+  resetWall() {
+    Object.keys(this.walls).forEach( (item) => {
+      let [x, y] = item.split('_');
+      document.getElementsByTagName('ul')[x].getElementsByTagName('li')[y].style.backgroundColor = '#fff';
+    });
+    this.walls = {};
+  },
   rotateCar() {
     let [x, y] = this.location;
     this.car.style.transform = `translateX(${100 * y}%) translateY(${100 * x}%) rotateZ(${this.deg}deg)`;
@@ -135,12 +230,15 @@ let cmdHandler = (text, index) => {
   else if (text === 'movtop') carController.movTop(moveNum);
   else if (text === 'movrig') carController.movRight(moveNum);
   else if (text === 'movbot') carController.movBottom(moveNum);
-  else if (text === 'movlef') carController.movLeft(moveNum)
+  else if (text === 'movlef') carController.movLeft(moveNum);
+  else if (text === 'build')  carController.build();
+  else if (text === 'bru#')   carController.paintWall('#' + moveNum);
   else errorInfo(index);
 }
 
 let cmdBtn       = document.getElementById('cmd-btn');
 let reBtn        = document.getElementById('re-btn');
+let buildBtn     = document.getElementById('build-btn');
 let cmdArea      = document.getElementById('cmdArea');
 let topRow       = document.getElementById('top');
 let rowOl        = document.getElementById('row-ol');
@@ -178,11 +276,16 @@ const resetRow = () => {
   } )
 };
 
+buildBtn.onclick = () => {
+  carController.randomBuild();
+};
+
 reBtn.onclick = () => {
   rowNum = [1];
   renderRowNum();
   topRow.style.backgroundColor = '#ccc';
   cmdArea.value = '';
+  carController.resetWall();
 };
 /************************************** 文本部分 **********************************/
 cmdArea.onkeydown = (event) => {

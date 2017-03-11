@@ -76,7 +76,8 @@ ul li {
 	text-align: center;
 }
 #cmd-btn,
-#re-btn {
+#re-btn,
+#build-btn {
 	display: inline-block;
 	height: 30px;
 	width: 60px;
@@ -92,8 +93,12 @@ ul li {
 	cursor: pointer;
 	transition: background-color .2s ease-in-out;
 }
+#build-btn {
+	width: 80px;
+}
 #cmd-btn:hover,
-#re-btn:hover {
+#re-btn:hover,
+#build-btn:hover {
 	background-color: #3fadf7;
 }
 #cmdArea {
