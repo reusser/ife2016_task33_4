@@ -79,9 +79,10 @@ let carController = {
           return;
         }
         i++
-
       }, 50)
+
     } else {
+
       let timer = setInterval( () => {
         let flag = this.setCarLocation([this.location[0], this.location[1] - 1]);
         if (flag === false || i == moveNum) {
@@ -89,7 +90,8 @@ let carController = {
           return;
         }
         i++
-      }, 50)  
+      }, 50)
+
     }
   },
   //向左移动一格，方向不变
@@ -161,6 +163,7 @@ let carController = {
     if (x <= 0 || x >= 11 || y <= 0 || y >= 11) return console.log('超出了范围！');
     if (this.walls[`${x}_${y}`]) return console.log('此位置已经有墙');
     if (x == this.location[0] && y == this.location[1]) return console.log('不能在小滑块处修墙');
+    
     let wall = document.getElementsByTagName('ul')[x].getElementsByTagName('li')[y];
     wall.style.backgroundColor = '#99a9bf';
     this.walls[`${x}_${y}`] = true;
@@ -286,6 +289,11 @@ reBtn.onclick = () => {
   topRow.style.backgroundColor = '#ccc';
   cmdArea.value = '';
   carController.resetWall();
+  carController.setCarLocation([5, 5]);
+  carController.directionPointer = 0;
+  carController.directionNow = 'up';
+  carController.deg = 0;
+  carController.rotateCar();
 };
 /************************************** 文本部分 **********************************/
 cmdArea.onkeydown = (event) => {
