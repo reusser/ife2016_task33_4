@@ -14,12 +14,12 @@ let carController = {
 	},
 	//设置定位 x为行数最小为1 y为列数最小为1
 	setCarSize() {
-		let ele = document.getElementsByTagName('ul')[1].getElementsByTagName('li')[1];
+    let ele = document.getElementsByTagName('ul')[1].getElementsByTagName('li')[1];
     this.car.style.height = window.getComputedStyle(ele, null).getPropertyValue('height');    		
-	  this.car.style.width  = window.getComputedStyle(ele, null).getPropertyValue('width');
+    this.car.style.width  = window.getComputedStyle(ele, null).getPropertyValue('width');
 	},
 	setCarLocation([x, y]) {
-		if (x <= 0 || x >= 11 || y <= 0 || y >= 11) return alert('超出了活动范围！');
+    if (x <= 0 || x >= 11 || y <= 0 || y >= 11) return alert('超出了活动范围！');
     this.car.style.transform = `translateX(${100 * y}%) translateY(${100 * x}%) rotateZ(${this.deg}deg)`;
     this.location = [x, y];
 	},
@@ -117,7 +117,7 @@ let carController = {
 };
 
 /************************************** 命令部分 **********************************/
-let cmdHandler = (text) => {
+let cmdHandler = (text, index) => {
 	text         = text.toLowerCase();
 	text         = text.replace(/\s/g, '');
 	let moveNum  = 1;
@@ -136,53 +136,90 @@ let cmdHandler = (text) => {
 	else if (text === 'movrig') carController.movRight(moveNum);
 	else if (text === 'movbot') carController.movBottom(moveNum);
 	else if (text === 'movlef') carController.movLeft(moveNum)
-	else return false;
+	else errorInfo(index);
 }
 
-let cmdBtn  = document.getElementById('cmd-btn');
-let reBtn   = document.getElementById('re-btn');
+let cmdBtn       = document.getElementById('cmd-btn');
+let reBtn        = document.getElementById('re-btn');
+let cmdArea      = document.getElementById('cmdArea');
+let topRow       = document.getElementById('top');
+let rowOl        = document.getElementById('row-ol');
+let rowNum       = [1];
+let rowNowLength = rowNum.length;
 
+
+//错误提示
+const errorInfo = (index) => {
+	let target = index > 0 ? rowOl.getElementsByTagName('div')[index - 1] : topRow;
+	target.style.backgroundColor = '#d93a49';
+}
 
 cmdBtn.onclick = () => {
-	let text = document.getElementById('cmd-input').value;
-	text = text.trim();
-	if (text === '') return alert('请输入命令');
-	cmdHandler(text);
-}
+	resetRow();
+	let textArray = cmdArea.value.split(/\n/);
+	let i = 0;
+	let animate   = setInterval( () => {
+    if (i >= textArray.length) {
+    	clearInterval(animate);
+    	return;
+    }
+    
+    let text = textArray[i];
+  	text = text.trim();
+  	text === '' ? errorInfo(i) : cmdHandler(text, i); 
+  	i++;	
+	}, 500);
+};
 
+const resetRow = () => {
+  topRow.style.backgroundColor = '#ccc';
+  Array.from(rowOl.getElementsByTagName('div')).forEach( (item) => {
+  	item.style.backgroundColor = '#ccc';
+  } )
+};
 
+reBtn.onclick = () => {
+  rowNum = [1];
+  renderRowNum();
+  topRow.style.backgroundColor = '#ccc';
+  cmdArea.value = '';
+};
 /************************************** 文本部分 **********************************/
-let rowNum  = [1];
-let cmds      = [];
-let rowNumEle = document.getElementById('row-num');
-let cmdArea   = document.getElementById('cmdArea');
-let rowNowLength = rowNum.length;
-cmdArea.onkeyup = (event) => {
+cmdArea.onkeydown = (event) => {
 	if (event.keyCode == 13) {
+
 		rowNum.push(rowNum.length + 1);
 		rowNowLength = rowNum.length;
 		renderRowNum();
+		topRow.style.backgroundColor = '#ccc';
+
 	} else if (event.keyCode == 8) {
-		rowNum.length = cmdArea.value.match(/\n/g) ? cmdArea.value.match(/\n/g).length + 1 : 1;
-		if (rowNum.length !== rowNowLength) {
-			rowNowLength = rowNum.length;
-			renderRowNum();
-		}
+		setTimeout( () => {
+
+		  rowNum.length = cmdArea.value.match(/\n/g) ? cmdArea.value.match(/\n/g).length + 1 : 1;
+		  if (rowNum.length !== rowNowLength) {
+			  rowNowLength = rowNum.length;
+			  renderRowNum();
+		  }	
+        topRow.style.backgroundColor = '#ccc';
+
+		}, 0);
 	}
 };
 
 const renderRowNum = () => {
-	let rows = '';
+  let rows = '';
   for (let i = 1; i < rowNum.length; i++) {
   	rows += `<div>${rowNum[i]}</div>`;
   }
-  rowNumEle.innerHTML = `<div id="top">1</div>` + rows;
+  rowOl.innerHTML = rows;
 }
 
-
+cmdArea.onscroll = () => {
+  topRow.style.marginTop = `-${cmdArea.scrollTop}px`;
+}
 
 
 
 carController.init();
 console.log("%c 18届小萌新求前端实习 熟悉html css js 自学vue中","background-image:-webkit-gradient( linear, left top,right top, color-stop(0, #4096EE), color-stop(0.15, #FF1A00), color-stop(0.3, #4096EE), color-stop(0.45, #FF1A00),color-stop(0.6, #4096EE), color-stop(0.75, #FF1A00),color-stop(0.9, #4096EE), color-stop(1, #FF1A00));color:transparent;-webkit-background-clip:text;font-size:14px;");
-//监听键盘事件每次换行push命令

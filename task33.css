@@ -103,6 +103,7 @@ ul li {
 	font-size: 22px;
 	line-height: 30px;
 	color: #27ae60;
+	white-space: nowrap;
 	border: none;
 	outline: none;
 	background-color: #000;
@@ -115,7 +116,8 @@ ul li {
   background-color: #ccc;
 	overflow: hidden;
 }
-#row-num div{
+#top,
+#row-ol div{
 	display: block;
   height: 8.334%;
   width: 100%;
