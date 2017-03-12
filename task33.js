@@ -210,7 +210,8 @@ let carController = {
   },
   //自动寻路算法
   moveTo([x, y]) {
-
+    x = parseInt(x);
+    y = parseInt(y);
     if (x <= 0 || x >= 11 || y <= 0 || y >= 11) return alert('超出了活动范围！');
     if (this.walls[`${x}_${y}`]) return false;
     let open   = {};
@@ -225,20 +226,22 @@ let carController = {
 
     if (closed[`${i + 1}_${j}`] && closed[`${i - 1}_${j}`] && closed[`${i}_${j + 1}`] && closed[`${i}_${j - 1}`]) return console.log('无路可走了')
 
-    for (; i != x || j != y;) { console.log(i, j)
+    for (; i != x || j != y; ) {
 
-      if (!closed[`${i + 1}_${j}`] && !open[`${ i + 1}_${j}`]) {
+      if (!closed[`${i + 1}_${j}`] && !open[`${i + 1}_${j}`]) {
         open[`${i + 1}_${j}`] = {};
         open[`${i + 1}_${j}`].g = g;
         open[`${i + 1}_${j}`].h = Math.abs(x - i - 1) + Math.abs(y - j);
         open[`${i + 1}_${j}`].f = open[`${i + 1}_${j}`].g + open[`${i + 1}_${j}`].h;
+        open[`${i + 1}_${j}`].n = Math.abs((x + y) - (i + 1 + j));
       }
 
-      if (!closed[`${i - 1}_${j}`] && !open[`${ i - 1}_${j}`]) {
+      if (!closed[`${i - 1}_${j}`] && !open[`${i - 1}_${j}`]) {
         open[`${i - 1}_${j}`] = {};
         open[`${i - 1}_${j}`].g = g;
         open[`${i - 1}_${j}`].h = Math.abs(x - i + 1) + Math.abs(y - j)
         open[`${i - 1}_${j}`].f = open[`${i - 1}_${j}`].g + open[`${i - 1}_${j}`].h;
+        open[`${i - 1}_${j}`].n = Math.abs((x + y) - (i - 1 + j));
       }
 
       if (!closed[`${i}_${j + 1}`] && !open[`${i}_${j + 1}`]) {
@@ -246,20 +249,30 @@ let carController = {
         open[`${i}_${j + 1}`].g = g;
         open[`${i}_${j + 1}`].h = Math.abs(x - i) + Math.abs(y - j - 1);
         open[`${i}_${j + 1}`].f = open[`${i}_${j + 1}`].g + open[`${i}_${j + 1}`].h;
+        open[`${i}_${j + 1}`].n = Math.abs((x + y) - (i + 1 + j));
       }
 
       if (!closed[`${i}_${j - 1}`] && !open[`${i}_${j - 1}`]) {
         open[`${i}_${j - 1}`] = {};
         open[`${i}_${j - 1}`].g = g;
         open[`${i}_${j - 1}`].h = Math.abs(x - i) + Math.abs(y - j + 1);
-        open[`${i}_${j - 1}`].f = open[`${i}_${j - 1}`].g + open[`${i}_${j - 1}`].h;        
+        open[`${i}_${j - 1}`].f = open[`${i}_${j - 1}`].g + open[`${i}_${j - 1}`].h;
+        open[`${i}_${j - 1}`].n = Math.abs((x + y) - (i - 1 + j));        
       }
-      let min = [open[`${ i + 1}_${j}`], open[`${ i - 1}_${j}`], open[`${i}_${j + 1}`], open[`${i}_${j - 1}`]].sort( (a, b) => a.f - b.f)[0];
-
+      let min = [open[`${ i + 1}_${j}`], open[`${ i - 1}_${j}`], open[`${i}_${j + 1}`], open[`${i}_${j - 1}`]].sort( (a, b) => {
+        if (a.f != b.f) return a.f - b.f;
+        if (a.f == b.f ) {
+          return a.n - b.n;
+        }
+      })[0];
       Object.keys(open).every( (item) => {
-        if (open[item].f == min.f && open[item].g == min.g && open[item].h == min.h) { 
+        if (open[item].f == min.f && open[item].g == min.g && open[item].h == min.h && open[item].n == min.n) {
           [i, j] = item.split('_');
+          i = parseInt(i);
+          j = parseInt(j);
           path.push([i, j]);
+          closed[`${i}_${j}`] = true;
+          delete open[`${i}_${j}`];
           return false;
         }
         return true;
