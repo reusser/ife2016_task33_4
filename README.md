@@ -1,5 +1,6 @@
 ##一个会自动寻路的小滑块
 ###version：4.0
+####障碍很多的情况下 寻路算法会出现bug（智商有限，应该是解决不了了）
 
 ###warn:暂时只支持能运行es6的浏览器如Chrome
 <hr>
@@ -45,4 +46,4 @@
 - 增加一个指令：MOV TO x, y，会使得方块从当前位置移动到坐标为x，y的地方，移动过程中不能进入墙所在的地方，实现了自动寻路算法(障碍偏多的情况下还是有bug)
 <br>
 
-[开启小车吧！](https://Reusjs.github.io/task33_1/task33.html "demo")
+[开启小车吧！](https://Reusjs.github.io/task33_4/task33.html "demo")
