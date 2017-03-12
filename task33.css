@@ -11,7 +11,7 @@
 	box-sizing: border-box;
 	width: 550px;
 	height: 550px;
-	margin: auto;
+	margin: auto 50px;
 }
 ul {
 	display: inline-flex;
@@ -65,8 +65,8 @@ ul li {
 	background-color: #3498db;
 }
 #cmd {
-	float: right;
-	width: 550px;
+	float: left;
+	width: 30%;
 	height: 550px;
 	margin-top: 40px;
 	margin-right: 100px;
