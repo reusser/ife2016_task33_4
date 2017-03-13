@@ -394,7 +394,7 @@ let cmdHandler = (text, index) => {
 let cmdBtn       = document.getElementById('cmd-btn');
 let reBtn        = document.getElementById('re-btn');
 let buildBtn     = document.getElementById('build-btn');
-let cmdArea      = document.getElementById('cmdArea');
+var cmdArea      = document.getElementById('cmdArea');
 let topRow       = document.getElementById('top');
 let rowOl        = document.getElementById('row-ol');
 let rowNum       = [1];
